@@ -1,0 +1,282 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Sanguche & Co — Inicio</title>
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="siteHeader"></div>
+<main>
+  <section class="hero">
+    <div class="container hero-wrap">
+      <div class="hero-card fade-up">
+        <div class="hero-content">
+          <div>
+            <span class="kicker"><i class="bi bi-fire"></i> Sándwiches • Empanadas • Postres</span>
+            <h2>El arte hecho sánguche</h2>
+            <p>Pan de masa madre + rellenos generosos + combos para todos los gustos. Pedí por WhatsApp, PedidosYa o Monchis.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="sabores.html"><i class="bi bi-grid-3x3-gap"></i> Ver sándwiches</a>
+              <a class="btn btn-primary" href="productos.html"><i class="bi bi-stars"></i> Otros</a>
+              <a class="btn btn-primary" href="promos.html"><i class="bi bi-stars"></i> Promos</a>
+            </div>
+          </div>
+          <div class="badge"><i class="bi bi-geo-alt"></i> Centro de Asunción • Delivery por PedidosYa</div>
+        </div>
+      </div>
+      <div class="hero-media fade-up">
+        <img src="hero.png" alt="Sanguche & Co — Hero">
+        <div class="overlay">
+          <strong><i class="bi bi-lightning-charge"></i> Tip</strong>
+          <div class="note">Probá la Ciabatta recien caientito 😋</div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <div class="container peya-banner fade-up">
+  <div class="wrap">
+    <div class="left">
+      <strong>Envío rápido por PedidosYa y Mochis</strong>
+    </div>
+    <div class="right icons-inline">
+      <!-- PedidosYa -->
+      <a class="btn btn-soft btn-circle" id="btnPeYaFast"
+         href="https://tu-link-de-pedidosya"
+         target="_blank" rel="noopener"
+         aria-label="Pedir por PedidosYa">
+        <img class="btn-circle-img" src="Icon.jpeg" alt="PedidosYa">
+      </a>
+
+      <!-- Monchis -->
+      <a class="btn btn-soft btn-circle" id="btnMonchis"
+         href="https://tu-link-de-monchis"
+         target="_blank" rel="noopener"
+         aria-label="Pedir por Monchis">
+        <img class="btn-circle-img" src="monchis.png" alt="Monchis">
+      </a>
+    </div>
+  </div>
+</div>
+  </div>
+  <section class="section">
+    <div class="container">
+      <div class="section-title">
+        <h2>¿Por qué elegirnos?</h2>
+        <p>Ingredientes reales + pan artesanal + compra fácil.</p>
+      </div>
+      <div class="grid cards cards-4">
+        <div class="card fade-up"><div class="icon"><i class="bi bi-bag-heart"></i></div><h3>Pan artesanal</h3><p>Ciabatta de masa madre para mejor textura.</p></div>
+        <div class="card fade-up"><div class="icon"><i class="bi bi-egg-fried"></i></div><h3>Rellenos generosos</h3><p>Clásicos y de autor.</p></div>
+        <div class="card fade-up"><div class="icon"><i class="bi bi-truck"></i></div><h3>Pedido rápido</h3><p>Armá tu carrito y finalizá por WhatsApp.</p></div>
+        <div class="card fade-up"><div class="icon"><i class="bi bi-cup-hot"></i></div><h3>Postres y bebidas</h3><p>Sumá algo dulce o fresco al combo.</p></div>
+      </div>
+      <div class="carousel-wrap fade-up" style="margin-top:18px">
+        <div id="palefitCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3500">
+          <div class="carousel-indicators" id="carouselIndicators"></div>
+          <div class="carousel-inner" id="carouselInner"></div>
+          <button class="carousel-control-prev" type="button" data-bs-target="#palefitCarousel" data-bs-slide="prev"><span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Anterior</span></button>
+          <button class="carousel-control-next" type="button" data-bs-target="#palefitCarousel" data-bs-slide="next"><span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Siguiente</span></button>
+        </div>
+      </div>
+      <div class="page-hero fade-up" style="margin-top:18px">
+        <h2><i class="bi bi-cart3"></i> Pedí en 1 minuto</h2>
+        <p>Agregá productos al carrito y enviá el pedido directo por WhatsApp.</p>
+        <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn btn-primary" href="carrito.html"><i class="bi bi-cart-check"></i> Ir al carrito</a>
+          <a class="btn btn-soft" href="contacto.html"><i class="bi bi-whatsapp"></i> Contacto</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <!-- Modal Promoción del Día -->
+<div class="modal fade" id="promoTodayModal" tabindex="-1" aria-labelledby="promoTodayLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="border-radius:18px; overflow:hidden;">
+      <div class="modal-body p-0" style="position:relative;">
+        <!-- Imagen/banner -->
+        <div id="promoModalBanner" style="
+          min-height: 260px;
+          background: #ddd center/cover no-repeat;
+          position: relative;">
+          <div style="position:absolute; inset:0; background:
+            linear-gradient(90deg, rgba(143,42,29,.55), rgba(143,42,29,.22) 45%, rgba(242,178,76,.25));">
+          </div>
+          <div style="position:absolute; left:0; right:0; bottom:0; padding:16px; color:#fff;">
+            <div id="promoModalBadges" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px;"></div>
+            <h3 id="promoTodayLabel" style="margin:0 0 4px;"></h3>
+            <div id="promoModalDesc" class="note" style="margin:0;"></div>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="p-3" style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a id="promoModalMaps" class="btn btn-primary" target="_blank" rel="noopener">
+            <i class="bi bi-map"></i> Cómo llegar
+          </a>
+          <a id="promoModalWhats" class="btn btn-soft" target="_blank" rel="noopener">
+            <i class="bi bi-whatsapp"></i> Consultar
+          </a>
+          <button type="button" class="btn btn-ghost ms-auto" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle"></i> Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<script src="data.js"></script>
+<script>
+  // Ajuste: usar APP_CONFIG o PALEFIT según disponible (compatibilidad)
+  document.addEventListener('DOMContentLoaded', () => {
+    try {
+      const b = document.getElementById('btnPeYaFast');
+      const cfg = window.APP_CONFIG || window.PALEFIT || {};
+      if (b && cfg.pedidosya) { b.href = cfg.pedidosya; }
+    } catch(e) {}
+
+    const items = (window.HELADERIA_DATA && window.HELADERIA_DATA.carousel) ? window.HELADERIA_DATA.carousel : [];
+    const ind = document.getElementById('carouselIndicators');
+    const inner = document.getElementById('carouselInner');
+    if (!ind || !inner) return;
+    ind.innerHTML = '';
+    inner.innerHTML = '';
+    if (items.length === 0) {
+      inner.innerHTML = `<div class="carousel-item active"><img src="assets/img/Hero.png" alt="Sanguche & Co"><div class="carousel-caption d-none d-md-block"><strong>¡Bienvenido!</strong><div class="note" style="margin:0">Pronto más promos</div></div></div>`;
+      return;
+    }
+    items.forEach((it, idx) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('data-bs-target','#palefitCarousel'); b.setAttribute('data-bs-slide-to', String(idx));
+      if (idx===0){ b.className='active'; b.setAttribute('aria-current','true'); }
+      b.setAttribute('aria-label', `Slide ${idx+1}`); ind.appendChild(b);
+      const div = document.createElement('div');
+      div.className = 'carousel-item' + (idx===0 ? ' active' : '');
+      div.innerHTML = ` <img src="${it.img}" alt="${it.title || 'Sanguche & Co'}" loading="lazy"> <div class="carousel-caption d-none d-md-block"> <strong>${it.title || ''}</strong> <div class="note" style="margin:0">${it.desc || ''}</div> </div>`;
+      inner.appendChild(div);
+    });
+  });
+</script>
+<div id="siteFooter"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="config.js"></script>
+<script src="components.js"></script>
+<script src="cart.js"></script>
+<script src="main.js"></script>
+<!-- Modal Promoción del Día -->
+<div class="modal fade" id="promoTodayModal" tabindex="-1" aria-labelledby="promoTodayLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content" style="border-radius:18px; overflow:hidden;">
+      <div class="modal-body p-0" style="position:relative;">
+        <!-- Banner con imagen -->
+        <div id="promoModalBanner" style="
+          min-height: 260px;
+          background: #ddd center/cover no-repeat;
+          position: relative;">
+          <!-- Overlay con tu paleta -->
+          <div style="position:absolute; inset:0; background:
+            linear-gradient(90deg, rgba(143,42,29,.55), rgba(143,42,29,.22) 45%, rgba(252, 252, 252, 0.863));">
+          </div>
+
+          <!-- Texto sobre el banner -->
+          <div style="position:absolute; left:0; right:0; bottom:0; padding:16px; color:#fff;">
+            <div id="promoModalBadges" style="display:flex; gap:8px; flex-wrap:wrap; margin-bottom:6px;"></div>
+            <h3 id="promoTodayLabel" style="margin:0 0 4px;"></h3>
+            <div id="promoModalDesc" class="note" style="margin:0;"></div>
+          </div>
+        </div>
+
+        <!-- Acciones -->
+        <div class="p-3" style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a id="promoModalMaps" class="btn btn-primary" target="_blank" rel="noopener">
+            <i class="bi bi-map"></i> Cómo llegar
+          </a>
+          <a id="promoModalWhats" class="btn btn-soft" target="_blank" rel="noopener">
+            <i class="bi bi-whatsapp"></i> Consultar
+          </a>
+          <button type="button" class="btn btn-ghost ms-auto" data-bs-dismiss="modal">
+            <i class="bi bi-x-circle"></i> Cerrar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  const money = (n)=> new Intl.NumberFormat('es-PY',{style:'currency',currency:'PYG',maximumFractionDigits:0}).format(n||0);
+  const $ = (sel,root=document)=> root.querySelector(sel);
+
+  // Helpers de vigencia
+  const parseISO = (s)=>{ if(!s) return null; const [y,m,d]=s.split('-').map(Number); if(!y||!m||!d) return null; return new Date(y,m-1,d,0,0,0); };
+  const isPromoValid = (p, now=new Date())=>{
+    if(!p) return false;
+    const from=parseISO(p.validFrom), to=parseISO(p.validTo);
+    if(from && now<from) return false;
+    if(to){ const end=new Date(to.getFullYear(),to.getMonth(),to.getDate(),23,59,59); if(now>end) return false; }
+    if(Array.isArray(p.validMonths)&&p.validMonths.length){ const mm=now.getMonth()+1; if(!p.validMonths.includes(mm)) return false; }
+    return true;
+  };
+  const getMaps = ()=>{
+    const c=window.APP_CONFIG||window.PALEFIT||{};
+    return c.mapsQuery ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.mapsQuery)}` : '#';
+  };
+  const getWhats = (title)=>{
+    const c=window.APP_CONFIG||window.PALEFIT||{};
+    const wa=c.whatsapp||'';
+    const text=`Hola! Quiero consultar la promo del día: ${title||''}`;
+    return wa ? `https://wa.me/${wa}?text=${encodeURIComponent(text)}` : '#';
+  };
+
+  document.addEventListener('DOMContentLoaded', ()=>{
+    const promos = window.HELADERIA_DATA?.promosPorDia || {};
+    const today  = new Date().getDay(); // 0..6
+    const p      = promos[today];
+    if(!p || !isPromoValid(p)) return; // No hay promo válida hoy → no abrir modal
+
+    // Contenidos del modal
+    const dayNames=["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+    const title = `Promo ${dayNames[today]}: ${p.title}`;
+    const desc  = [
+      p.desc,
+      (p.priceOld? `<span style="text-decoration:line-through; opacity:.75;">${money(p.priceOld)}</span>` : ''),
+      (p.price? ` <strong>${money(p.price)}</strong>` : '')
+    ].filter(Boolean).join(' ');
+
+    $("#promoTodayLabel").textContent = title;
+    $("#promoModalDesc").innerHTML    = desc;
+
+    // Imagen (usa tu carpeta "Menu/" si allí guardás las promos)
+    const banner = $("#promoModalBanner");
+    const img    = p.img || 'assets/img/Menu/default.jpg';
+    banner.style.backgroundImage = `url('${img}')`;
+
+    // Badges
+    const badges = $("#promoModalBadges");
+    badges.innerHTML = `
+      <span class="badge" style="background: rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.25);">
+        <i class="bi bi-geo-alt"></i> ${p.badge || 'Solo en el local'}
+      </span>
+      ${p.hours ? `<span class="badge" style="background: rgba(255,255,255,.18); color:#fff; border:1px solid rgba(255,255,255,.25);">
+        <i class="bi bi-clock"></i> ${p.hours}</span>` : '' }
+    `;
+
+    // Acciones
+    $("#promoModalMaps").href  = getMaps();
+    $("#promoModalWhats").href = getWhats(p.title);
+
+    // 👇 Siempre mostrar al cargar (sin guardar “visto”)
+    const modalEl = document.getElementById("promoTodayModal");
+    const modal   = bootstrap.Modal.getOrCreateInstance(modalEl);
+    modal.show();
+  });
+})();
+</script>
+</body>
+</html>

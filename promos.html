@@ -1,0 +1,235 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Sánguche & Co — Promos</title>
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet"/>
+  <link rel="stylesheet" href="styles.css"/>
+  <style>
+    .toggle-wrap{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:space-between; margin-top:14px; }
+    .toggle-buttons{ display:flex; gap:10px; flex-wrap:wrap; }
+    .btn-toggle.active{ background: var(--primary-dark); color:#fff; border: 1px solid rgba(0,0,0,.06); }
+    .promo-fixed-badge{ position: sticky; top: calc(var(--header-h) + 12px); z-index: 5; }
+    .muted-card{ opacity:.72; filter: grayscale(.15); }
+
+    .promo-hero{ position: relative; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); border: 1px solid rgba(0,0,0,.06); background: #fff; margin-top: 16px; min-height: 340px; background-position: center; background-size: cover; background-repeat: no-repeat; }
+    .promo-hero__overlay{ position:absolute; inset:0; background: linear-gradient(90deg, rgba(143, 42, 29, .55), rgba(143, 42, 29, .22) 45%, rgba(242, 178, 76, .25)); }
+    .promo-hero__content{ position: relative; z-index: 2; padding: 22px; max-width: 760px; color: #fff; }
+    .promo-hero__kicker{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; }
+    .promo-hero__actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 14px; }
+    .promo-hero .badge{ background: rgba(255,255,255,.18); color:#fff; border: 1px solid rgba(255,255,255,.25); }
+    .promo-hero .note{ color: rgba(255,255,255,.90); }
+    @media (max-width: 640px){ .promo-hero{ min-height: 380px; } .promo-hero__content{ max-width: 100%; } }
+
+    /* Precio/chip visual */
+    .price-badge{ display:inline-flex; align-items:center; gap:8px; padding:8px 12px; border-radius:999px; background: rgba(255,255,255,.86); color:#111; border:1px solid rgba(0,0,0,.06); font-weight:800; }
+    .price-old{ text-decoration: line-through; opacity:.72; font-weight:600; }
+  </style>
+</head>
+<body>
+  <div id="siteHeader"></div>
+  <main class="section">
+    <div class="container">
+      <div class="page-hero fade-up">
+        <h2><i class="bi bi-tags"></i> Promociones</h2>
+        <p>Promos por día, válidas <strong>solo en el local</strong></p>
+        <div style="margin-top:10px; display:flex; gap:10px; flex-wrap:wrap;">
+          <a class="btn btn-soft" id="goMaps" target="_blank" rel="noopener">
+            <i class="bi bi-map"></i> Cómo llegar
+          </a>
+        </div>
+      </div>
+
+      <div class="promo-fixed-badge fade-up" style="margin-top:14px;">
+        <div class="badge">
+          <i class="bi bi-geo-alt"></i> Promo válida solo en el local
+        </div>
+      </div>
+
+      <!-- HERO BANNER -->
+      <section id="promoHero" class="promo-hero fade-up" style="display:none;">
+        <div class="promo-hero__overlay"></div>
+        <div class="promo-hero__content">
+          <div class="promo-hero__kicker">
+            <span class="badge"><i class="bi bi-geo-alt"></i> Solo en el local</span>
+            <span class="badge" id="promoHeroHours" style="display:none;"></span>
+            <span class="price-badge" id="promoHeroPrice" style="display:none;"></span>
+          </div>
+          <h2 id="promoHeroTitle" style="margin:10px 0 6px;"></h2>
+          <p id="promoHeroDesc" class="note" style="margin:0;"></p>
+          <div class="promo-hero__actions">
+            <a class="btn btn-primary" id="promoHeroMaps" target="_blank" rel="noopener">
+              <i class="bi bi-map"></i> Cómo llegar
+            </a>
+            <a class="btn btn-soft" id="promoHeroWhats" target="_blank" rel="noopener">
+              <i class="bi bi-whatsapp"></i> Consultar
+            </a>
+          </div>
+          <div id="promoHeroValidity" class="note" style="margin-top:10px; display:none;"></div>
+        </div>
+      </section>
+
+      <!-- Toggle -->
+      <div class="toggle-wrap fade-up">
+        <div class="toggle-buttons">
+          <button id="btnViewToday" class="btn btn-soft btn-toggle" type="button">
+            <i class="bi bi-calendar-event"></i> Ver promo de hoy
+          </button>
+        </div>
+        <div class="note">
+          <i class="bi bi-info-circle"></i> Las promos pueden tener vigencia por fechas/temporada.
+        </div>
+      </div>
+
+      <!-- Promo del día (texto) -->
+      <div id="promoHoyWrap" style="margin-top:16px; display:none;">
+        <div id="promoHoy" class="page-hero fade-up"></div>
+      </div>
+
+      <!-- Sin promo -->
+      <div id="noPromoWrap" style="margin-top:16px; display:none;">
+        <div class="card fade-up" style="padding:18px;">
+          <h3 style="margin:0 0 8px"><i class="bi bi-exclamation-circle"></i> Hoy no hay promo disponible</h3>
+          <p class="note" style="margin:0">Puede que no haya promo cargada para hoy o que no esté vigente por temporada. Consultá en el local o por WhatsApp.</p>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+            <a class="btn btn-primary" href="contacto.html"><i class="bi bi-whatsapp"></i> Consultar</a>
+            <a class="btn btn-soft" href="sabores.html"><i class="bi bi-grid-3x3-gap"></i> Ver sabores</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Semana -->
+      <div id="weekWrap" style="margin-top:18px; display:none;">
+        <div class="section-title">
+          <h2>Promo semanal</h2>
+          <p>Se muestran según el día. Si una no está vigente, se marca como inactiva.</p>
+        </div>
+        <div id="promoSemana" class="grid cards" style="margin-top:12px"></div>
+      </div>
+    </div>
+  </main>
+
+  <div id="siteFooter"></div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="cart.js"></script>
+  <script src="config.js"></script>
+  <script src="components.js"></script>
+  <script src="data.js"></script>
+  <script src="main.js"></script>
+
+  <script>
+    (function(){
+      const dias = ["Domingo","Lunes","Martes","Miércoles","Jueves","Viernes","Sábado"];
+      const order = [1,2,3,4,5,6,0];
+      const $ = (id) => document.getElementById(id);
+      const money = (n) => new Intl.NumberFormat('es-PY',{ style:'currency', currency:'PYG', maximumFractionDigits:0 }).format(n||0);
+
+      function parseISO(dateStr){ if(!dateStr) return null; const [y,m,d] = dateStr.split("-").map(Number); if(!y||!m||!d) return null; return new Date(y,m-1,d,0,0,0); }
+      function isPromoValid(promo, now=new Date()){
+        if(!promo) return false;
+        const from=parseISO(promo.validFrom); const to=parseISO(promo.validTo);
+        if(from && now < from) return false;
+        if(to){ const end=new Date(to.getFullYear(),to.getMonth(),to.getDate(),23,59,59); if(now > end) return false; }
+        if(Array.isArray(promo.validMonths)&&promo.validMonths.length){ const mm=now.getMonth()+1; if(!promo.validMonths.includes(mm)) return false; }
+        return true;
+      }
+      function getMapsLink(){ const c=window.APP_CONFIG||window.PALEFIT||{}; return c.mapsQuery? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.mapsQuery)}` : '#'; }
+      function getWhatsLink(title){ const c=window.APP_CONFIG||window.PALEFIT||{}; const wa=c.whatsapp||''; const text=`Hola! Quiero consultar la promo del día: ${title||''}`; return wa? `https://wa.me/${wa}?text=${encodeURIComponent(text)}` : '#'; }
+      function show(id,on){ const el=$(id); if(!el) return; el.style.display = on? '' : 'none'; }
+      function setToggleActive(view){ const a=$("btnViewToday"), b=$("btnViewWeek"); [a,b].forEach(x=>x&&x.classList.remove('active')); if(view==='today'&&a) a.classList.add('active'); if(view==='week'&&b) b.classList.add('active'); }
+
+      function renderPromoHero(promoValida, dayName){
+        const hero=$("promoHero"); if(!hero) return; if(!promoValida){ hero.style.display='none'; return; }
+        hero.style.display='block';
+        const img = promoValida.img || 'assets/img/Promos/default.jpg';
+        hero.style.backgroundImage = `url('${img}')`;
+        $("promoHeroTitle").textContent = `Promo ${dayName}: ${promoValida.title}`;
+        $("promoHeroDesc").textContent = promoValida.desc || '';
+        const hoursEl=$("promoHeroHours"); if(promoValida.hours){ hoursEl.style.display='inline-flex'; hoursEl.innerHTML = `<i class="bi bi-clock"></i> ${promoValida.hours}`; } else { hoursEl.style.display='none'; }
+        const priceEl=$("promoHeroPrice"); if(promoValida.price){
+          const old = promoValida.priceOld? `<span class="price-old">${money(promoValida.priceOld)}</span>` : '';
+          priceEl.style.display='inline-flex';
+          priceEl.innerHTML = `${old} <span>${money(promoValida.price)}</span>`;
+        } else { priceEl.style.display='none'; }
+        $("promoHeroMaps").href = getMapsLink();
+        $("promoHeroWhats").href = getWhatsLink(promoValida.title);
+        const validity=$("promoHeroValidity");
+        if(promoValida.validFrom || promoValida.validTo){
+          validity.style.display='block';
+          validity.innerHTML = `<i class="bi bi-shield-check"></i> Vigencia: ${promoValida.validFrom||'—'} a ${promoValida.validTo||'—'}`;
+        } else { validity.style.display='none'; }
+      }
+
+      function renderToday(){
+        const promos = window.HELADERIA_DATA?.promosPorDia || {};
+        const day = new Date().getDay();
+        const dayName = dias[day];
+        const promo = promos[day];
+        const promoValida = (promo && isPromoValid(promo))? promo : null;
+        renderPromoHero(promoValida, dayName);
+        if(promoValida){
+          show('promoHoyWrap', true); show('noPromoWrap', false); show('weekWrap', false);
+          const el=$("promoHoy"); if(!el) return;
+          const price = promoValida.price? ` • <strong>${money(promoValida.price)}</strong>` : '';
+          const old = promoValida.priceOld? ` <span class="price-old">${money(promoValida.priceOld)}</span>` : '';
+          el.innerHTML = `
+            <h2><i class="bi bi-calendar-event"></i> Promo de hoy (${dayName})</h2>
+            <p style="margin-top:6px"><strong>${promoValida.title}</strong> — ${promoValida.desc}${price} ${old}</p>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+              <span class="badge"><i class="bi bi-geo-alt"></i> ${promoValida.badge||'Solo en el local'}</span>
+              ${promoValida.hours? `<span class="badge"><i class=\"bi bi-clock\"></i> ${promoValida.hours}</span>` : ''}
+              <a class="btn btn-soft" href="${getMapsLink()}" target="_blank" rel="noopener"><i class="bi bi-map"></i> Cómo llegar</a>
+            </div>
+          `;
+        } else {
+          show('promoHoyWrap', false); show('weekWrap', false); show('noPromoWrap', true);
+        }
+      }
+
+      function renderWeek(){
+        const promos = window.HELADERIA_DATA?.promosPorDia || {};
+        const grid=$("promoSemana"); if(!grid) return;
+        renderToday(); show('promoHoyWrap', false); show('noPromoWrap', false); show('weekWrap', true);
+        const now=new Date(); const today=now.getDay();
+        const mapLink=getMapsLink();
+        grid.innerHTML = order.map(k=>{
+          const p=promos[k]; if(!p) return '';
+          const active=isPromoValid(p,now); const isToday=Number(k)===today;
+          const price = p.price? `<div class=\"price-badge\">${p.priceOld? `<span class=\"price-old\">${money(p.priceOld)}</span>`:''} <span>${money(p.price)}</span></div>` : '';
+          return `
+            <div class="card fade-up ${active? '' : 'muted-card'}">
+              <div class="icon"><i class="bi bi-calendar-week"></i></div>
+              <h3>${dias[k]}${isToday? ' • Hoy' : ''}</h3>
+              <p style="margin-top:6px"><strong>${p.title}</strong> — ${p.desc}</p>
+              ${price}
+              <div class="badge" style="margin-top:10px">
+                <i class="bi bi-geo-alt"></i> ${p.badge||'Solo en el local'}${active? '' : ' • No vigente'}
+              </div>
+              ${p.hours? `<div class=\"note\" style=\"margin-top:10px\"><i class=\"bi bi-clock\"></i> ${p.hours}</div>` : ''}
+              ${(p.validFrom||p.validTo)? `<div class=\"note\" style=\"margin-top:8px\"><i class=\"bi bi-shield-check\"></i> Vigencia: ${p.validFrom||'—'} a ${p.validTo||'—'}</div>` : ''}
+              <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
+                <a class="btn btn-soft" href="${getWhatsLink(p.title)}" target="_blank" rel="noopener"><i class="bi bi-whatsapp"></i> Consultar</a>
+                <a class="btn btn-soft" href="${mapLink}" target="_blank" rel="noopener"><i class="bi bi-map"></i> Local</a>
+              </div>
+            </div>`;
+        }).join('');
+      }
+
+      function applyView(view){ setToggleActive(view); localStorage.setItem('palefit_promos_view', view); if(view==='today'){ renderToday(); } else { renderWeek(); } }
+      function init(){
+        const goMaps=$("goMaps"); if(goMaps) goMaps.href = getMapsLink();
+        $("btnViewToday")?.addEventListener('click', ()=>applyView('today'));
+        $("btnViewWeek")?.addEventListener('click', ()=>applyView('week'));
+        const saved=localStorage.getItem('palefit_promos_view');
+        applyView(saved==='week'? 'week' : 'today');
+      }
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+  </script>
+</body>
+</html>

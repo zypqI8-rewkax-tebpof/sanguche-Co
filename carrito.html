@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Sanguche & Co — Carrito</title>
+  <link rel="icon" type="image/png" href="assets/img/favicon.png" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div id="siteHeader"></div>
+<main class="section">
+  <div class="container">
+    <div class="page-hero fade-up">
+      <h2><i class="bi bi-cart3"></i> Carrito</h2>
+      <p>Revisá tu pedido y finalizá por WhatsApp.</p>
+    </div>
+    <div class="cart" style="margin-top:16px">
+      <div class="cart-list fade-up" id="cartList"></div>
+      <aside class="cart-summary fade-up">
+        <h3 style="margin:0 0 8px">Resumen</h3>
+        <div class="sum-row"><span>Subtotal</span><strong id="subTotal">Gs 0</strong></div>
+        <div class="sum-row total"><span>Total</span><strong id="total">Gs 0</strong></div>
+        <div class="field"><label>Nombre</label><input id="buyerName" placeholder="Tu nombre"></div>
+        <div class="field"><label>Dirección / Referencia</label><textarea id="buyerAddress" placeholder="Barrio, calle, casa, referencia..."></textarea></div>
+        <div class="split">
+          <div class="field"><label>Entrega</label><select id="deliveryType"><option value="Delivery">Delivery</option><option value="Retiro en local">Retiro en local</option></select></div>
+          <div class="field"><label>Pago</label><select id="paymentType"><option value="">Seleccionar...</option><option value="Efectivo">Efectivo</option><option value="Transferencia">Transferencia</option><option value="Tarjeta">Tarjeta</option></select></div>
+        </div>
+        <div class="field" style="margin-top:10px">
+          <label style="display:flex; align-items:center; gap:10px; cursor:pointer;"><input type="checkbox" id="confirmOrder" style="width:18px; height:18px;"><span>Confirmo que mis datos son correctos y deseo enviar el pedido.</span></label>
+          <div class="note" style="margin-top:6px"><i class="bi bi-geo-alt"></i> Importante: promos/beneficios “solo en el local” no aplican a delivery.</div>
+        </div>
+        <button class="btn btn-primary" id="btnWhatsApp" type="button" style="width:100%; margin-top:8px"><i class="bi bi-whatsapp"></i> Finalizar por WhatsApp</button>
+        <button class="btn btn-soft" id="btnClear" type="button" style="width:100%; margin-top:10px"><i class="bi bi-trash"></i> Vaciar carrito</button>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<div class="modal fade" id="validationModal" tabindex="-1" aria-labelledby="validationModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered"><div class="modal-content" style="border-radius: 18px;">
+    <div class="modal-header"><h5 class="modal-title" id="validationModalLabel"><i class="bi bi-exclamation-triangle"></i> Revisá tus datos</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button></div>
+    <div class="modal-body"><div id="validationModalBody" class="note" style="margin:0;"></div></div>
+    <div class="modal-footer"><button type="button" class="btn btn-soft" data-bs-dismiss="modal"><i class="bi bi-check2"></i> Entendido</button></div>
+  </div></div>
+</div>
+
+<script>
+function showModal(titleHTML, bodyHTML){ const titleEl=document.getElementById('validationModalLabel'); const bodyEl=document.getElementById('validationModalBody'); if(titleEl) titleEl.innerHTML=titleHTML; if(bodyEl) bodyEl.innerHTML=bodyHTML; const modalEl=document.getElementById('validationModal'); const modal=bootstrap.Modal.getOrCreateInstance(modalEl); modal.show(); }
+function setInvalid(el,msg){ el.classList.add('is-invalid'); let small=el.parentElement.querySelector('.field-error'); if(!small){ small=document.createElement('div'); small.className='field-error'; el.parentElement.appendChild(small);} small.textContent=msg; }
+function clearInvalid(el){ el.classList.remove('is-invalid'); const small=el.parentElement.querySelector('.field-error'); if(small) small.remove(); }
+function syncAddressField(){ const deliveryEl=document.getElementById('deliveryType'); const addrEl=document.getElementById('buyerAddress'); if(!deliveryEl||!addrEl) return; const isDelivery = deliveryEl.value==='Delivery'; addrEl.disabled=!isDelivery; if(!isDelivery){ addrEl.value=''; clearInvalid(addrEl);} addrEl.placeholder = isDelivery? 'Barrio, calle, casa, referencia...' : 'No requerido para retiro en local'; }
+function validateOrder(){ const nameEl=document.getElementById('buyerName'); const addrEl=document.getElementById('buyerAddress'); const deliveryEl=document.getElementById('deliveryType'); const paymentEl=document.getElementById('paymentType'); const confirmEl=document.getElementById('confirmOrder'); [nameEl,addrEl,deliveryEl,paymentEl].forEach(el=>el&&clearInvalid(el)); if(confirmEl) clearInvalid(confirmEl); const name=nameEl.value.trim(); const delivery=deliveryEl.value; const payment=paymentEl.value; const addr=addrEl.value.trim(); const confirmed=confirmEl.checked; let ok=true; const errors=[]; if(name.length<2){ ok=false; setInvalid(nameEl,'Ingresá tu nombre (mínimo 2 caracteres).'); errors.push('Ingresá tu nombre.'); }
+ if(delivery==='Delivery'){ if(addr.length<6){ ok=false; setInvalid(addrEl,'Para delivery, ingresá una dirección o referencia válida.'); errors.push('Ingresá una dirección válida para delivery.'); } }
+ if(!payment){ ok=false; setInvalid(paymentEl,'Seleccioná un método de pago.'); errors.push('Seleccioná un método de pago.'); }
+ if(!confirmed){ ok=false; confirmEl.classList.add('is-invalid'); errors.push('Confirmá el checkbox para enviar el pedido.'); } else { confirmEl.classList.remove('is-invalid'); }
+ return { ok, errors }; }
+function renderCart(){ const list=document.getElementById('cartList'); const cart=Cart.loadCart(); if(cart.length===0){ list.innerHTML = `<div style="padding:16px"><h3 style="margin:0 0 6px">Tu carrito está vacío</h3><p class="note" style="margin:0 0 12px">Agregá sándwiches o productos para armar tu pedido.</p><a class="btn btn-primary" href="sabores.html"><i class="bi bi-grid-3x3-gap"></i> Ir a Sándwiches</a><a class="btn btn-soft" href="productos.html"><i class="bi bi-stars"></i> Ver Otros</a></div>`; updateTotals(); return; }
+ list.innerHTML = cart.map(it=>`<div class="cart-item"><img src="${it.img}" alt="${it.nombre}"><div><h4>${it.nombre}</h4><small>${Cart.moneyPYG(it.precio)} c/u</small><div class="product-actions" style="margin-top:10px"><div class="qty"><button type="button" data-dec="${it.id}" aria-label="Disminuir">−</button><span id="cqty_${it.id}">${it.qty}</span><button type="button" data-inc="${it.id}" aria-label="Aumentar">+</button></div><button class="btn btn-ghost" type="button" data-del="${it.id}"><i class="bi bi-x-circle"></i> Eliminar</button></div></div><div class="right"><strong>${Cart.moneyPYG(it.precio * it.qty)}</strong></div></div>`).join('');
+ list.querySelectorAll('[data-inc]').forEach(btn=>{ btn.addEventListener('click', ()=>{ const id=btn.getAttribute('data-inc'); const cart=Cart.loadCart(); const it=cart.find(x=>x.id===id); if(!it) return; Cart.setQty(id, it.qty+1); renderCart(); }); });
+ list.querySelectorAll('[data-dec]').forEach(btn=>{ btn.addEventListener('click', ()=>{ const id=btn.getAttribute('data-dec'); const cart=Cart.loadCart(); const it=cart.find(x=>x.id===id); if(!it) return; Cart.setQty(id, Math.max(1, it.qty-1)); renderCart(); }); });
+ list.querySelectorAll('[data-del]').forEach(btn=>{ btn.addEventListener('click', ()=>{ const id=btn.getAttribute('data-del'); Cart.removeFromCart(id); renderCart(); }); });
+ updateTotals(); }
+function updateTotals(){ const {subtotal,total}=Cart.getCartTotals(); document.getElementById('subTotal').textContent = Cart.moneyPYG(subtotal); document.getElementById('total').textContent = Cart.moneyPYG(total); Cart.updateCartCount(); }
+document.getElementById('btnClear').addEventListener('click', ()=>{ Cart.clearCart(); renderCart(); });
+document.getElementById('deliveryType').addEventListener('change', syncAddressField);
+document.getElementById('btnWhatsApp').addEventListener('click', ()=>{
+ const cart=Cart.loadCart(); if(cart.length===0){ showModal('<i class="bi bi-info-circle"></i> Carrito vacío','Tu carrito está vacío. Agregá productos antes de enviar el pedido.'); return; }
+ syncAddressField(); const {ok,errors}=validateOrder(); if(!ok){ showModal('<i class="bi bi-exclamation-triangle"></i> Faltan datos', `<div>Completá lo siguiente:</div><ul style="margin:10px 0 0; padding-left:18px;">${errors.map(e=>`<li>${e}</li>`).join('')}</ul>`); return; }
+ const name=document.getElementById('buyerName').value.trim(); const delivery=document.getElementById('deliveryType').value; const payment=document.getElementById('paymentType').value; const addr=(delivery==='Delivery')?document.getElementById('buyerAddress').value.trim():'Retiro en local';
+ const lines = cart.map(it=>`• ${it.nombre} x${it.qty} = ${Cart.moneyPYG(it.precio*it.qty)}`);
+ const { total }=Cart.getCartTotals();
+ const message = `Hola! Soy ${name}. \nQuiero hacer este pedido: \n${lines.join(" \n")} \nTotal: ${Cart.moneyPYG(total)} \nEntrega: ${delivery} \nPago: ${payment} \nDirección/Referencia: ${addr}`;
+ const cfg = window.APP_CONFIG || window.PALEFIT || {}; const WHATSAPP = cfg.whatsapp || '';
+ const url = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(message)}`;
+ window.open(url,'_blank');
+ setTimeout(()=>{ Cart.clearCart(); renderCart(); document.getElementById('confirmOrder').checked=false; },300);
+});
+
+document.addEventListener('DOMContentLoaded', ()=>{ syncAddressField(); renderCart(); });
+</script>
+<div id="siteFooter"></div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="config.js"></script>
+<script src="components.js"></script>
+<script src="cart.js"></script>
+<script src="main.js"></script>
+</body>
+</html>
